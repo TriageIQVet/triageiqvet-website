@@ -1,0 +1,554 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>TriageIQ Vet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="TriageIQ Vet is practice management software for small-animal clinics with boarding, daycare and grooming.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Fragment+Mono&display=swap">
+<style>
+/* Layout: the site borrows the product's own signal. A hollow circle is work still to do; a filled circle is work recorded. */
+:root {
+  --ground: #F7F3EC; --surface: #FFFFFF; --ink: #13303D; --muted: #4A5B66; --line: #E3DBCE;
+  --navy: #0D4A63; --teal: #137F8F; --teal-text: #0E6A78; --spark: #E2622A; --spark-text: #AD4114; --tint: #E4F1F2;
+  --band: #0D4A63; --on-band: #F7F3EC; --on-band-muted: #BFD3DC; --band-accent: #5CC3CF;
+  --btn: #137F8F; --on-btn: #FFFFFF; --btn-hover: #0E6A78;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --data: "Fragment Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ground: #0B2A38; --surface: #103646; --ink: #F7F3EC; --muted: #BFD3DC; --line: #27505F;
+  --navy: #F7F3EC; --teal: #5CC3CF; --teal-text: #7FD3DD; --spark: #F08A5A; --spark-text: #F6A47E; --tint: #164554;
+  --band: #103646; --on-band: #F7F3EC; --on-band-muted: #BFD3DC; --band-accent: #5CC3CF;
+  --btn: #5CC3CF; --on-btn: #0B2A38; --btn-hover: #7FD3DD; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --ground: #0B2A38; --surface: #103646; --ink: #F7F3EC; --muted: #BFD3DC; --line: #27505F;
+  --navy: #F7F3EC; --teal: #5CC3CF; --teal-text: #7FD3DD; --spark: #F08A5A; --spark-text: #F6A47E; --tint: #164554;
+  --band: #103646; --on-band: #F7F3EC; --on-band-muted: #BFD3DC; --band-accent: #5CC3CF;
+  --btn: #5CC3CF; --on-btn: #0B2A38; --btn-hover: #7FD3DD; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--ground); color: var(--ink); font: 400 17px/1.6 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ground); }
+.wrap { max-width: 1160px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap > *, .split > *, .grid > * { min-width: 0; }
+h1, h2, h3 { color: var(--navy); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.5rem, 5.6vw, 4.25rem); font-weight: 800; line-height: 1.04; letter-spacing: -.03em; }
+h2 { font-size: clamp(1.85rem, 3.6vw, 2.75rem); font-weight: 800; line-height: 1.1; letter-spacing: -.025em; }
+h3 { font-size: 1.2rem; font-weight: 700; line-height: 1.25; letter-spacing: -.01em; }
+p { margin: 0; }
+a { color: var(--teal-text); }
+:focus-visible { outline: 3px solid var(--spark); outline-offset: 2px; }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 46ch; }
+.intro { display: grid; gap: 14px; max-width: 44rem; }
+.intro p { color: var(--muted); }
+.eyebrow { font: 600 .8rem/1.3 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--teal-text); }
+.btn { display: inline-flex; align-items: center; min-height: 46px; padding: .55em 1.15em; border: 0; border-radius: 8px; background: var(--btn); color: var(--on-btn); font: 700 1rem/1.2 var(--body); text-decoration: none; cursor: pointer; }
+.btn:hover { background: var(--btn-hover); }
+.btn.plain { background: transparent; color: var(--teal-text); box-shadow: inset 0 0 0 1.5px var(--teal); }
+.btn.plain:hover { background: var(--tint); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+section { padding-block: 72px; }
+
+/* Header */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--ground); border-bottom: 1px solid var(--line); }
+header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 8px 24px; flex-wrap: wrap; padding-block: 10px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 1.4rem; font-weight: 800; letter-spacing: -.03em; text-decoration: none; color: var(--navy); }
+.brand span span { color: var(--teal); }
+.brand .vet { color: var(--navy); font-weight: 400; letter-spacing: -.01em; margin-left: .2em; }
+.brand svg { flex: none; }
+#mark .t { fill: var(--teal); } #mark .o { fill: var(--spark); } #mark .n { fill: var(--navy); }
+nav { display: flex; align-items: center; gap: 4px 20px; flex-wrap: wrap; }
+nav a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; font-size: .98rem; color: var(--ink); text-decoration: none; }
+nav a:not(.btn):hover { color: var(--teal-text); }
+nav a[aria-current="page"]:not(.btn) { color: var(--teal-text); box-shadow: inset 0 -2px 0 var(--spark); }
+
+/* Hero */
+.hero { padding-block: 56px 72px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 40px 56px; align-items: center; }
+.hero-copy { display: grid; gap: 22px; justify-items: start; }
+
+/* Status circles */
+.dot { flex: none; display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--muted); background: transparent; }
+.dot.done { border-color: var(--teal); background: var(--teal); box-shadow: inset 0 0 0 2.5px var(--surface); }
+
+/* Scan demo */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 6px 16px; flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.panel-head strong { color: var(--navy); }
+.panel-head span, .panel-foot { font-size: .86rem; color: var(--muted); }
+.lines { list-style: none; margin: 0; padding: 0; }
+.lines li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 64px; padding: 8px 18px; border-bottom: 1px solid var(--line); }
+.lines b { display: block; font-weight: 600; line-height: 1.3; }
+.lines small { font: 400 .76rem/1.4 var(--data); color: var(--muted); }
+.scan { min-height: 44px; padding: 0 14px; border-radius: 8px; border: 0; background: var(--btn); color: var(--on-btn); font: 700 .92rem/1 var(--body); cursor: pointer; }
+.scan:hover { background: var(--btn-hover); }
+.got { font-size: .86rem; font-weight: 600; color: var(--teal-text); }
+.effects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.effects > div { padding: 14px 18px 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.effects > div + div { border-left: 1px solid var(--line); }
+.effects h3 { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--teal-text); }
+.effects .big { font: 400 1.25rem/1.3 var(--data); color: var(--navy); font-variant-numeric: tabular-nums; }
+.effects p { font-size: .85rem; line-height: 1.4; color: var(--muted); }
+.flash { animation: flash 1s ease-out; }
+@keyframes flash { from { background: var(--tint); } to { background: transparent; } }
+.panel-foot { display: flex; justify-content: space-between; align-items: center; gap: 6px 16px; flex-wrap: wrap; padding: 8px 18px; border-top: 1px solid var(--line); }
+.link-btn { min-height: 44px; border: 0; background: none; padding: 0; font: 600 .9rem/1 var(--body); color: var(--teal-text); text-decoration: underline; cursor: pointer; }
+
+.shot { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #F7F3EC; }
+.vwrap { position: relative; }
+.shot video { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #F7F3EC; }
+.vbtn { position: absolute; right: 10px; bottom: 10px; min-height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: rgba(13,74,99,.86); color: #fff; font: 600 .82rem/1 var(--body); cursor: pointer; }
+.vbtn:hover { background: rgba(13,74,99,1); }
+.shot.tall { max-width: 420px; justify-self: center; }
+.feature > .shot { grid-column: 1 / -1; }
+.shot figcaption { font-size: .84rem; color: var(--muted); }
+.shot.mt { margin-top: 40px; }
+
+/* Grids and lists */
+.grid { display: grid; gap: 36px 40px; }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.item { display: grid; gap: 8px; align-content: start; }
+.item p { color: var(--muted); font-size: 1rem; }
+.mt { margin-top: 40px; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.checks li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; }
+.checks .dot { width: 9px; height: 9px; margin-top: 10px; border: 0; background: var(--teal); box-shadow: none; }
+.checks.mt { margin-top: 40px; }
+.checks b { color: var(--navy); font-weight: 700; }
+.pitch { border-top: 2px solid var(--navy); }
+.pitch > div { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 4px 32px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.pitch h3 { font-size: 1.1rem; }
+.pitch p { color: var(--muted); max-width: 62ch; }
+.tinted { background: var(--surface); border-block: 1px solid var(--line); }
+
+.band { background: var(--band); color: var(--on-band); }
+.band h2 { color: var(--on-band); }
+.band p { color: var(--on-band-muted); }
+.band .wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) auto; gap: 24px 48px; align-items: center; }
+.band .btn { background: var(--band-accent); color: #0B2A38; }
+.band .btn:hover { background: #7FD3DD; }
+
+/* Product */
+.page-head { padding-block: 56px 16px; }
+.page-head .intro { max-width: 48rem; }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px 56px; align-items: start; }
+.feature .intro { position: sticky; top: 96px; }
+.jump { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 20px; padding-bottom: 8px; }
+.jump button { min-height: 44px; border: 0; background: none; padding: 0; font: 600 .95rem/1.2 var(--body); color: var(--teal-text); text-decoration: underline; cursor: pointer; }
+.product section { padding-block: 56px; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
+
+.dose { display: grid; gap: 14px; padding: 18px; }
+.dose label { display: grid; gap: 4px; font-weight: 600; font-size: .95rem; }
+.dose-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.dose-grid > div { display: grid; gap: 2px; min-width: 0; }
+.dose-grid span { font-size: .8rem; color: var(--muted); }
+.dose-grid strong { font: 400 1.3rem/1.3 var(--data); color: var(--navy); }
+#ml { color: var(--spark-text); }
+input, select, textarea { width: 100%; min-height: 46px; padding: .55em .75em; border-radius: 8px; border: 1px solid var(--muted); background: var(--surface); color: var(--ink); font: 400 1rem/1.3 var(--body); }
+
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .92rem; }
+th { text-align: left; font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+th, td { padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tr:last-child td { border-bottom: 0; }
+td small { display: block; font-size: .78rem; color: var(--muted); }
+td b { color: var(--navy); }
+.crit { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .05em; color: var(--spark-text); text-transform: uppercase; }
+.soap { display: inline-flex; gap: 5px; font: 400 .78rem/1 var(--data); white-space: nowrap; }
+.soap i { font-style: normal; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--muted); color: var(--muted); }
+.soap i.on { background: var(--teal); border-color: var(--teal); color: var(--surface); }
+.late { color: var(--spark-text); font-weight: 700; }
+
+/* Steps */
+.steps { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding-block: 18px; border-top: 1px solid var(--line); }
+.steps li::before { content: counter(s); font-size: 2rem; font-weight: 800; line-height: 1; letter-spacing: -.03em; color: var(--spark-text); }
+.steps p { color: var(--muted); }
+.road > div { display: grid; gap: 12px; align-content: start; padding-top: 16px; border-top: 3px solid var(--teal); }
+.road > div:nth-child(2) { border-top-color: var(--navy); }
+.road > div:nth-child(3) { border-top-color: var(--spark); }
+.road ul { margin: 0; padding-left: 1.1em; color: var(--muted); display: grid; gap: 6px; font-size: 1rem; }
+.note { font-size: .92rem; color: var(--muted); max-width: 70ch; }
+
+/* Early access */
+.signup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 64px; align-items: start; }
+form { display: grid; gap: 16px; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+form label { display: grid; gap: 4px; font-weight: 600; font-size: .95rem; }
+#sent { font-size: .95rem; color: var(--ink); background: var(--tint); padding: 10px 12px; border-radius: 8px; }
+details { border-top: 1px solid var(--line); padding-block: 6px; }
+details:last-child { border-bottom: 1px solid var(--line); }
+summary { min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--navy); cursor: pointer; }
+details p { color: var(--muted); padding-bottom: 12px; max-width: 66ch; }
+
+footer { border-top: 1px solid var(--line); padding-block: 32px; font-size: .92rem; color: var(--muted); }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px 40px; flex-wrap: wrap; }
+footer p { max-width: 60ch; }
+
+@media (max-width: 900px) {
+  section { padding-block: 56px; }
+  .hero .wrap, .feature, .signup, .band .wrap { grid-template-columns: minmax(0, 1fr); }
+  .feature .intro { position: static; }
+  .g3, .g2 { grid-template-columns: minmax(0, 1fr); }
+  .pitch > div { grid-template-columns: minmax(0, 1fr); }
+  header.site { position: static; }
+  .product section { scroll-margin-top: 16px; }
+}
+@media (max-width: 520px) {
+  .effects { grid-template-columns: minmax(0, 1fr); }
+  .effects > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .dose-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .flash { animation: none; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="mark" viewBox="0 0 48 48"><ellipse cx="9.5" cy="22" rx="4.8" ry="6.2" transform="rotate(-18 9.5 22)" class="t"/><ellipse cx="18.5" cy="11.5" rx="5" ry="6.8" transform="rotate(-6 18.5 11.5)" class="o"/><ellipse cx="29.5" cy="11.5" rx="5" ry="6.8" transform="rotate(6 29.5 11.5)" class="t"/><ellipse cx="38.5" cy="22" rx="4.8" ry="6.2" transform="rotate(18 38.5 22)" class="t"/><path d="M24 22c6 0 12.5 7 12.5 13.5 0 4.5-3.5 7-7 6-2-.6-3.7-1.2-5.5-1.2s-3.5.6-5.5 1.2c-3.5 1-7-1.5-7-6C11.5 29 18 22 24 22Z" class="n"/></symbol>
+</defs></svg>
+
+<header class="site"><div class="wrap">
+  <a class="brand" href="#home" aria-label="TriageIQ Vet home"><svg width="38" height="38" aria-hidden="true"><use href="#mark"/></svg><span>Triage<span>IQ</span><span class="vet">Vet</span></span></a>
+  <nav aria-label="Main">
+    <a href="#home" data-nav="home">Home</a>
+    <a href="#product" data-nav="product">Product</a>
+    <a href="#switching" data-nav="switching">Switching</a>
+    <a href="#faq" data-nav="faq">FAQ</a>
+    <a class="btn" href="#early-access" data-nav="early-access">Early access</a>
+  </nav>
+</div></header>
+
+<main>
+
+<!-- HOME -->
+<div data-view="home">
+  <div class="hero"><div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Smarter practice management for veterinary clinics</p>
+      <h1>Do each thing once.</h1>
+      <p class="lede">TriageIQ Vet is practice software for small-animal clinics with boarding, daycare and grooming. Every scan, check-off and signature feeds the invoice, the stock count and the record at the same time.</p>
+      <div class="actions"><a class="btn" href="#early-access">Join early access</a><a class="btn plain" href="#product">See the product</a></div>
+    </div>
+    <div class="panel" aria-label="Scanning demo with sample data">
+      <div class="panel-head"><strong>Juniper · Consumables</strong><span>Spay · Labrador · 31.2 kg</span></div>
+      <ul class="lines" id="lines"></ul>
+      <div class="effects" aria-live="polite">
+        <div id="fx-inv"><h3>Invoice</h3><span class="big" id="inv"></span><p id="inv-n"></p></div>
+        <div id="fx-stk"><h3>Stock</h3><span class="big" id="stk"></span><p id="stk-n"></p></div>
+        <div id="fx-rec"><h3>Chart</h3><span class="big" id="rec"></span><p id="rec-n"></p></div>
+      </div>
+      <div class="panel-foot"><span>Try it: press Scan. Sample patient and prices.</span><button class="link-btn" type="button" id="reset">Start over</button></div>
+    </div>
+  </div></div>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="intro"><h2>Fully customizable, with a head start.</h2><p>A new clinic never starts from a blank screen. Optional defaults are ready to go, and the choice of how to use them is yours.</p></div>
+    <div class="grid g3 mt">
+      <div class="item"><h3>Use them</h3><p>Start with working defaults for discharges, medication information, service codes, inventory and reminders.</p></div>
+      <div class="item"><h3>Edit them</h3><p>Change anything to match how your clinic works, and leave the rest alone.</p></div>
+      <div class="item"><h3>Create your own</h3><p>Skip a default and build your own from scratch.</p></div>
+    </div>
+  </div></section>
+
+  <section class="tinted"><div class="wrap">
+    <div class="intro"><h2>One scan does three jobs.</h2><p>A clinic's day usually gets entered three times: once for care, once for billing, once for stock. TriageIQ Vet treats them as one event seen from different screens.</p></div>
+    <div class="grid g3 mt">
+      <div class="item"><h3>Charges follow the care</h3><p>A scan or a check-off adds the charge, or skips it when the item is already in a bundle. The invoice is finished when the care is.</p></div>
+      <div class="item"><h3>Stock stays right</h3><p>Items are drawn by lot and expiry at treatment time, so the count on screen is the count on the shelf.</p></div>
+      <div class="item"><h3>Missed scans stay visible</h3><p>A hollow circle marks what still needs scanning, and the record shows it until someone scans it.</p></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="intro"><h2>One record for the whole clinic.</h2></div>
+    <div class="pitch mt">
+      <div><h3>Practice owners</h3><p>Every scan and check-off becomes a charge, so less revenue slips away and stock stays right without nightly counts.</p></div>
+      <div><h3>Medical directors</h3><p>Doses, maps, treatment sheets and monitoring in one record, with the whiteboard built from the care itself.</p></div>
+      <div><h3>Hospital managers</h3><p>Pre-built user groups, shifts and templates. Set things once and every device follows.</p></div>
+      <div><h3>Front desk</h3><p>Book, check in with the signature pad, check out and refund a single line, accessible from every screen.</p></div>
+      <div><h3>Kennel staff</h3><p>The whole boarding week on one screen, and daycare added in two clicks.</p></div>
+    </div>
+  </div></section>
+
+  <section class="tinted" aria-labelledby="about"><div class="wrap">
+    <div class="intro"><p class="eyebrow">About</p><h2 id="about">Smarter practice management for veterinary clinics.</h2><p>I've spent 18 years in the veterinary industry. I started as a daycare attendant, then worked as a technician, a zookeeper, and in emergency and specialty surgery. In my corporate roles, I worked with a wide range of practice management systems and implemented them from start to finish.</p><p>TriageIQ Vet comes from seeing that software from both sides: on the floor using it, and in the room setting it up. It's designed around real clinic workflows, so a task done once counts everywhere it matters.</p><p>The first goal is simple: run one clinic's full day, prove it beside the old system, then open it to other clinics.</p></div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <div class="intro"><h2>TriageIQ Vet is in development.</h2><p>The first version is planned as a pilot that runs one clinic's full day. Join the early access list to follow along.</p></div>
+    <a class="btn" href="#early-access">Join early access</a>
+  </div></section>
+</div>
+
+<!-- PRODUCT -->
+<div data-view="product" class="product" hidden>
+  <div class="page-head"><div class="wrap">
+    <div class="intro"><p class="eyebrow">Product</p><h1>Built around a clinic workflow.</h1><p class="lede">Everything below reads and writes one shared record. This page describes the planned product.</p></div>
+    <div class="jump" aria-label="On this page">
+      <button type="button" data-jump="p-custom">Customizing</button>
+      <button type="button" data-jump="p-stock">Inventory</button>
+      <button type="button" data-jump="p-med">Medications</button>
+      <button type="button" data-jump="p-board">Whiteboard</button>
+      <button type="button" data-jump="p-record">Medical record</button>
+      <button type="button" data-jump="p-desk">Front desk</button>
+      <button type="button" data-jump="p-stay">Boarding and grooming</button>
+      <button type="button" data-jump="p-setup">Templates</button>
+    </div>
+  </div></div>
+
+  <section id="p-custom"><div class="wrap feature">
+    <div class="intro"><h2>Fully customizable, with a head start</h2><p>Optional defaults give every clinic a working setup on day one. Use them, edit them or create your own.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>Discharges.</b> Default instructions for common surgeries and visits fill in the patient and clinic details.</div></li>
+      <li><span class="dot done"></span><div><b>Medication information.</b> Start from ready-made sheets for your clients.</div></li>
+      <li><span class="dot done"></span><div><b>Service codes.</b> Begin with a working list instead of an empty price list.</div></li>
+      <li><span class="dot done"></span><div><b>Inventory.</b> Start with default items and adjust them to what you stock.</div></li>
+      <li><span class="dot done"></span><div><b>Reminders and standard of care.</b> These load with the species, and each patient only shows the reminders it has actually had.</div></li>
+      <li><span class="dot done"></span><div><b>User groups come pre-built.</b> Front desk, technician, DVM, lead, billing and managers start with sensible permissions. Copy one to make a custom group.</div></li>
+      <li><span class="dot done"></span><div><b>Restore defaults undoes mistakes.</b> You can experiment with user groups and get back to where you started.</div></li>
+      <li><span class="dot done"></span><div><b>Appointment kinds are ready to book.</b> They come with colors, check-in forms and online-booking rules, and you can add your own and change the order.</div></li>
+      <li><span class="dot done"></span><div><b>Every screen opens on what's usual.</b> Set the default calendar view, printers and lock-screen time once.</div></li>
+    </ul>
+  </div></section>
+
+  <section id="p-stock"><div class="wrap feature">
+    <div class="intro"><h2>Inventory that counts itself</h2><p>Stock is drawn the moment a tech scans a consumable at treatment time.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>Scan to fill the details.</b> A barcode scan fills the product, lot, expiry and serial number.</div></li>
+      <li><span class="dot done"></span><div><b>One button for every other movement.</b> Receive, in-hospital use and wastage sit behind the box icon on every page.</div></li>
+      <li><span class="dot done"></span><div><b>Costs protect margins.</b> A supplier price rise over the clinic's limit lands on a review list before it changes a fee.</div></li>
+      <li><span class="dot done"></span><div><b>Controlled drugs tracked by bottle.</b> Every draw is logged and checked against counts, and waste needs a witness. Only the Medical Director verifies receipts.</div></li>
+      <li><span class="dot done"></span><div><b>Reports for inspection.</b> The controlled-drug log runs for any date range, split by schedule.</div></li>
+    </ul>
+  </div></section>
+
+  <section id="p-med"><div class="wrap feature">
+    <div class="intro"><h2>Doses worked out from today's weight</h2><p>Pick the drug and the mL to draw appears on the line and on the label. Nobody does mg/kg arithmetic on a sticky note.</p>
+      <ul class="checks">
+        <li><span class="dot done"></span><div><b>Emergency doses are ready first.</b> The monitoring sheet lists each ER drug already calculated for this patient.</div></li>
+        <li><span class="dot done"></span><div><b>One dose starts the schedule.</b> A drug given in surgery prefills the start of its follow-up doses.</div></li>
+        <li><span class="dot done"></span><div><b>Prescriptions carry their history.</b> Refills left, expiry and the original prescriber follow every refill.</div></li>
+      </ul>
+    </div>
+    <figure class="shot"><div class="vwrap"><video src="videos/emergency.mp4" poster="videos/emergency.jpg" width="1000" height="720" muted loop playsinline preload="metadata" aria-label="Video: today's weight typed on the SOAP, the Emergency drugs pop-up showing the mL to draw for each drug, and Epinephrine added to the visit"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+  </div></section>
+
+  <section id="p-board"><div class="wrap">
+    <div class="intro"><h2>A whiteboard built from the work itself</h2><p>SOAP sections check off as they are filled, and treatment-sheet tasks turn red the minute they are late. There is no color code to learn: Mark critical puts a patient on top, and everyone else is in check-in order.</p></div>
+    <figure class="shot mt"><div class="vwrap"><video src="videos/whiteboard.mp4" poster="videos/whiteboard.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: the hospital whiteboard checking off SOAP sections, a late treatment in red marked done on the treatment sheet, and the patient marked critical moving to the top"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+    <ul class="checks grid g2 mt">
+      <li><span class="dot done"></span><div><b>Any combination of boards.</b> Appointments, ER, surgery, isolation, inpatient, boarding and grooming.</div></li>
+      <li><span class="dot done"></span><div><b>Marking done charges and draws stock.</b> The treatment sheet does the billing as care happens.</div></li>
+      <li><span class="dot done"></span><div><b>Monitoring sheets.</b> Anesthesia records and ER doses feed the treatment sheet. Tap the next time box to record a vital.</div></li>
+    </ul>
+  </div></section>
+
+  <section id="p-record"><div class="wrap feature">
+    <div class="intro"><h2>A medical record that protects itself</h2><p>Write the SOAP from a template or by voice. Dictation recognizes what is medically relevant and places each part in the correct area.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>Signed, then permanently locked.</b> A signed SOAP can be unlocked until the permanent lock. After that, changes are addenda with an author and a time, never edits.</div></li>
+      <li><span class="dot done"></span><div><b>Body, eye and dental maps.</b> Saved into the record by species and carried to the next visit.</div></li>
+      <li><span class="dot done"></span><div><b>See who else is working.</b> When someone is on the same SOAP, their changes appear as they make them.</div></li>
+      <li><span class="dot done"></span><div><b>Certificates.</b> Spay/neuter, domestic and international health certificates fill from the patient record for a DVM to approve.</div></li>
+      <li><span class="dot done"></span><div><b>Signed records are never erased.</b> They are corrected with addenda, and every change has an audit entry.</div></li>
+    </ul>
+  </div></section>
+
+  <section id="p-desk"><div class="wrap feature">
+    <div class="intro"><h2>A calm front desk</h2><p>Scheduling, check-in, messages and checkout, accessible from every screen.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>Calendar by resource.</b> A column per doctor, room, imaging or groomer, with drag to reschedule and side-by-side double-booking.</div></li>
+      <li><span class="dot done"></span><div><b>Online booking.</b> Clients book within your rules, and requests arrive for review.</div></li>
+      <li><span class="dot done"></span><div><b>Hold a time for 24 hours.</b> Offer a client a time and hold it while they decide. Online booking can't take it, and an unconfirmed hold clears itself.</div></li>
+      <li><span class="dot done"></span><div><b>A waitlist that fills openings.</b> See who's waiting, most urgent first, and drag them onto an open time to book.</div></li>
+      <li><span class="dot done"></span><div><b>Two-way texting and email.</b> Every client message is saved on the client. Texts go only to clients who agreed.</div></li>
+      <li><span class="dot done"></span><div><b>Price lookup on every page.</b> It shows the total with fees, and builds an estimate as you go.</div></li>
+      <li><span class="dot done"></span><div><b>Simple end of day.</b> Card payments come over automatically. Staff count the rest, and a difference creates a task to check it.</div></li>
+    </ul>
+  </div>
+  <div class="wrap">
+    <figure class="shot mt"><div class="vwrap"><video src="videos/calendar.mp4" poster="videos/calendar.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: booking from an open time, holding it for 24 hours, confirming the hold, and dragging a patient from the waitlist onto the calendar"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+  </div></section>
+
+  <section id="p-stay"><div class="wrap feature">
+    <div class="intro"><h2>Boarding, daycare and grooming in the same record</h2><p>A boarder's meds, baths and vaccines never live in a separate binder.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>A whole stay on one screen.</b> The week, with each day's services, activities, notes and charges.</div></li>
+      <li><span class="dot done"></span><div><b>Recurring care in one step.</b> Walks, feeds and own-medication doses are added once for the stay.</div></li>
+      <li><span class="dot done"></span><div><b>Admission forms fill the record.</b> The signed form supplies the emergency contact and the can't-reach treatment limit.</div></li>
+      <li><span class="dot done"></span><div><b>Daycare in two clicks.</b> Vaccines are checked and capacity updates.</div></li>
+      <li><span class="dot done"></span><div><b>One checkout.</b> Boarding, grooming and medical invoices are paid together, each kept as its own invoice.</div></li>
+    </ul>
+  </div></section>
+
+  <section id="p-setup"><div class="wrap feature">
+    <div class="intro"><h2>Templates that attach themselves</h2><p>One search page holds every kind of template, so staff learn one place.</p></div>
+    <ul class="checks">
+      <li><span class="dot done"></span><div><b>Added automatically.</b> A spay bundle brings its discharge, its tasks and its estimate lines with it.</div></li>
+      <li><span class="dot done"></span><div><b>Real formatting.</b> Bold, italic, underline and lists, plus autofills for the patient, client and doctor.</div></li>
+      <li><span class="dot done"></span><div><b>Every PDF looks like the clinic.</b> Logo and clinic details first, then client and patient, then the content.</div></li>
+      <li><span class="dot done"></span><div><b>One base treatment sheet.</b> Customized on each patient, so the template list never sprawls.</div></li>
+    </ul>
+  </div></section>
+</div>
+
+<!-- SWITCHING -->
+<div data-view="switching" hidden>
+  <div class="page-head"><div class="wrap">
+    <div class="intro"><p class="eyebrow">Switching</p><h1>Move over with minimal interruption.</h1><p class="lede">Your TriageIQ Vet Deployment team works with you from setup through post-launch support, and client and patient IDs stay the same as your old system.</p></div>
+  </div></div>
+
+  <section style="padding-top:32px"><div class="wrap">
+    <h2>The planned move</h2>
+    <ol class="steps">
+      <li><div><h3>Meet with your Deployment team weekly</h3><p>Learn the system and set up your site together, starting from working defaults for service codes, inventory, templates and more.</p></div></li>
+      <li><div><h3>Train your team in a test environment</h3><p>Every user group practices on test data before anything goes live.</p></div></li>
+      <li><div><h3>Do a full inventory count</h3><p>Your opening stock counts match what's on the shelf from the first day.</p></div></li>
+      <li><div><h3>Final migration over a weekend</h3><p>Client and patient counts, open balances and every controlled bottle are reconciled. Older records move as read-only history.</p></div></li>
+      <li><div><h3>On-site training the morning of go-live</h3><p>Your Deployment team is at the clinic to train your staff that morning.</p></div></li>
+      <li><div><h3>Go live with check-ins</h3><p>Your Deployment team checks in with you, with a same-day fix path for anything blocking checkout, prescriptions or controlled drugs.</p></div></li>
+    </ol>
+  </div></section>
+
+  <section class="tinted"><div class="wrap">
+    <div class="intro"><h2>What it's being built to meet</h2><p>These are the requirements written into the development brief. They describe the goal, and they will be confirmed before launch.</p></div>
+    <div class="grid g3 mt">
+      <div class="item"><h3>Your data stays yours</h3><p>US hosting, encryption in transit and at rest, nightly backups, and a full export of your data on request.</p></div>
+      <div class="item"><h3>Access by job</h3><p>User groups come pre-built. A person can be granted or denied a single permission, and every change is written to a log that nobody can edit.</p></div>
+      <div class="item"><h3>Fast on a busy day</h3><p>The target is search results under 300 ms at 50,000 patients.</p></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="intro"><h2>Roadmap</h2></div>
+    <div class="grid g3 road mt">
+      <div><h3>First release</h3><ul><li>Staff web app, lock screen and PIN switching</li><li>Online booking and client portal</li><li>Card payments, email, two-way texting and labs</li></ul></div>
+      <div><h3>First six months after</h3><ul><li>Clinic App for tablet and phone</li><li>Client App</li><li>Multiple locations</li></ul></div>
+      <div><h3>Later</h3><ul><li>Herd and production animals</li><li>Ambulatory app that works without signal</li><li>Universal client</li></ul></div>
+    </div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <div class="intro"><h2>Thinking about switching?</h2><p>Tell us what you use today and what you'd change first.</p></div>
+    <a class="btn" href="#early-access">Join early access</a>
+  </div></section>
+</div>
+
+<!-- EARLY ACCESS -->
+<div data-view="early-access" hidden>
+  <div class="page-head"><div class="wrap signup">
+    <div class="intro"><p class="eyebrow">Early access</p><h1>Follow the build.</h1><p class="lede">TriageIQ Vet is in development and isn't available to buy yet. Join the list and we'll share progress as the pilot takes shape.</p><p>Questions or want more information? Email <a href="mailto:info@triageiqvet.com">info@triageiqvet.com</a>.</p></div>
+    <form id="ea">
+      <label for="f-name">Your name<input id="f-name" required autocomplete="name"></label>
+      <label for="f-clinic">Clinic name<input id="f-clinic" required autocomplete="organization"></label>
+      <label for="f-email">Work email<input id="f-email" type="email" required autocomplete="email"></label>
+      <label for="f-size">Number of veterinarians<select id="f-size"><option>1</option><option>2 to 5</option><option>6 to 15</option><option>More than 15</option></select></label>
+      <label for="f-now">Current software<input id="f-now"></label>
+      <button class="btn" type="submit">Join early access</button>
+      <p id="sent" role="status" hidden>Your email app should open with your details filled in. Press send there to reach us. If nothing opened, write to <a href="mailto:info@triageiqvet.com">info@triageiqvet.com</a>.</p>
+    </form>
+  </div></div>
+
+  <section class="tinted" aria-labelledby="trial"><div class="wrap">
+    <div class="intro"><p class="eyebrow">Free trial</p><h2 id="trial">Try TriageIQ Vet free for 14 days.</h2><p>Request a 14-day free trial in a test environment and work through your clinic's day, starting from the optional defaults. TriageIQ Vet isn't fully developed yet, so expect some parts to still be in progress. The trial doesn't include integrations, so card payments, labs, email and texting aren't connected.</p></div>
+    <div class="actions mt"><a class="btn" href="mailto:info@triageiqvet.com?subject=14-day%20free%20trial">Ask for a free trial</a></div>
+  </div></section>
+
+
+</div>
+
+<!-- FAQ -->
+<div data-view="faq" hidden>
+  <div class="page-head"><div class="wrap">
+    <div class="intro"><p class="eyebrow">FAQ</p><h1>Questions clinics ask.</h1><p class="lede">Don't see yours? Email <a href="mailto:info@triageiqvet.com">info@triageiqvet.com</a>.</p></div>
+  </div></div>
+  <section style="padding-top:32px"><div class="wrap">
+    <div>
+      <details open><summary>Can we use TriageIQ Vet today?</summary><p>Not in a live clinic yet. It's in development, and a pilot comes first. You can request a 14-day free trial in a test environment, but it isn't fully developed yet.</p></details>
+      <details><summary>What kind of clinic is it for?</summary><p>Small-animal clinics, including those with boarding, daycare and grooming. Herd and production animals come later.</p></details>
+      <details><summary>Can we keep our records?</summary><p>That is the plan. Live data moves with original client and patient IDs, and older records move as read-only history. How much moves depends on what your current software can export.</p></details>
+      <details><summary>What do we need at the clinic?</summary><p>TriageIQ Vet runs in a web browser. Plan for an internet connection with at least 50 Mbps download speed and 20 Mbps upload speed for up to 10 workstations, plus a backup connection. You'll also need barcode scanners, label printers and card terminals, and our team will go over which ones work best for your clinic.</p></details>
+      <details><summary>What does it cost?</summary><p>Pricing hasn't been set.</p></details>
+      <details><summary>Is our data safe, and who owns it?</summary><p>Your data is yours. TriageIQ Vet is being built with US hosting, encryption in transit and at rest, and nightly backups, and you can get a full export of your data on request.</p></details>
+      <details><summary>How long does switching take?</summary><p>The goal is two options: an 8-week or a 12-week move, from your first meeting with your Deployment team to go-live.</p></details>
+      <details><summary>What training and support do we get?</summary><p>Your Deployment team meets with you weekly to set up your site, your staff practices in a test environment, and the team trains your staff on site the morning you go live, then checks in with you after. TriageIQ Vet will also have a searchable Help Center on our website, with detailed step-by-step instructions for every workflow and what each term means.</p></details>
+      <details><summary>What happens if our internet goes down?</summary><p>TriageIQ Vet runs in a web browser, so you can keep working from a phone hotspot or on personal devices until the clinic's connection is back.</p></details>
+      <details><summary>Which integrations will it have?</summary><p>The first release is planned to connect card payments, email, two-way texting and labs.</p></details>
+      <details><summary>Can we change the templates, forms and service codes?</summary><p>Yes. Use the optional defaults, edit them, or build your own.</p></details>
+      <details><summary>How are controlled drugs handled?</summary><p>Every bottle is tracked, and every draw is logged and checked against counts. Waste needs a witness, only the Medical Director verifies receipts, and the controlled-drug log runs for any date range for inspections.</p></details>
+      <details><summary>Can clients book online or use an app?</summary><p>Online booking and a client portal are planned for the first release, and the Client App within six months after.</p></details>
+      <details><summary>Does it work on tablets and phones?</summary><p>The Clinic App for tablets and phones is planned within six months after the first release.</p></details>
+      <details><summary>Can we have more than one location?</summary><p>Not yet. Multiple locations are planned for the future. For now, each location runs as its own clinic.</p></details>
+      <details><summary>What happens to the data in our free trial?</summary><p>The trial runs in a test environment, so it should never hold real client or patient data.</p></details>
+    </div>
+  </div></section>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <p>TriageIQ Vet. Smarter practice management for veterinary clinics.</p>
+  <p>In development. Features describe the planned product and may change.</p>
+  <p><a href="mailto:info@triageiqvet.com">info@triageiqvet.com</a></p>
+</div></footer>
+
+<script>
+const VIEWS = ["home", "product", "switching", "faq", "early-access"];
+function route(first) {
+  const name = location.hash.slice(1), v = VIEWS.includes(name) ? name : "home";
+  document.querySelectorAll("[data-view]").forEach(e => e.hidden = e.dataset.view !== v);
+  document.querySelectorAll("[data-nav]").forEach(a => a.dataset.nav === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  if (!first) window.scrollTo(0, 0);
+}
+addEventListener("hashchange", () => route());
+route(true);
+document.querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => document.getElementById(b.dataset.jump).scrollIntoView()));
+
+const START = () => [
+  { name: "IV catheter, 22 g", lot: "C2291", exp: "08/2027", stock: 46, price: 0, done: true },
+  { name: "Suture, 3-0", lot: "S1180", exp: "01/2028", stock: 22, price: 0, done: false },
+  { name: "Rabies vaccine, 1 yr", lot: "R4471", exp: "03/2027", stock: 18, price: 32, done: false }
+];
+let items = START(), last = items[0];
+const $ = id => document.getElementById(id);
+function render(flash) {
+  $("lines").innerHTML = items.map((it, i) => `<li><span class="dot ${it.done ? "done" : ""}" role="img" aria-label="${it.done ? "Scanned" : "Not scanned"}"></span><div><b>${it.name}</b><small>${it.done ? `Lot ${it.lot} · Exp ${it.exp}` : it.price ? "Not in bundle" : "In spay bundle"}</small></div>${it.done ? `<span class="got">Scanned</span>` : `<button class="scan" type="button" data-i="${i}">Scan</button>`}</li>`).join("");
+  const total = 240 + items.filter(i => i.done).reduce((s, i) => s + i.price, 0);
+  $("inv").textContent = "$" + total.toFixed(2);
+  $("inv-n").textContent = last.price ? `${last.name} added at $${last.price.toFixed(2)}` : `${last.name} included in the bundle, no charge`;
+  $("stk").textContent = (last.done ? last.stock - 1 : last.stock) + " left";
+  $("stk-n").textContent = `${last.name}, lot ${last.lot}`;
+  const n = items.filter(i => i.done).length;
+  $("rec").textContent = `${n} of ${items.length}`;
+  $("rec-n").textContent = n === items.length ? "All consumables recorded" : `${items.length - n} hollow circle${items.length - n > 1 ? "s" : ""} still open`;
+  if (flash) ["fx-inv", "fx-stk", "fx-rec"].forEach(id => { const e = $(id); e.classList.remove("flash"); void e.offsetWidth; e.classList.add("flash"); });
+}
+$("lines").addEventListener("click", e => {
+  const b = e.target.closest(".scan");
+  if (!b) return;
+  last = items[+b.dataset.i]; last.done = true;
+  render(true);
+  (document.querySelector(".scan") || $("reset")).focus();
+});
+$("reset").addEventListener("click", () => { items = START(); last = items[0]; render(); });
+render();
+
+// Workflow videos: play while on screen, with a pause button; no autoplay when the visitor prefers reduced motion.
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.querySelectorAll(".vwrap").forEach(w => {
+  const v = w.querySelector("video"), b = w.querySelector(".vbtn");
+  let user = calm ? "paused" : null;
+  const sync = () => { b.textContent = v.paused ? "Play" : "Pause"; b.setAttribute("aria-label", (v.paused ? "Play" : "Pause") + " video"); };
+  b.addEventListener("click", () => { if (v.paused) { user = null; v.play().catch(() => {}); } else { user = "paused"; v.pause(); } });
+  v.addEventListener("play", sync); v.addEventListener("pause", sync); sync();
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !user) v.play().catch(() => {}); else if (!e.isIntersecting) v.pause(); }), { threshold: .35 }).observe(v);
+});
+
+$("ea").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = id => $(id).value.trim();
+  const body = `Name: ${v("f-name")}\nClinic: ${v("f-clinic")}\nWork email: ${v("f-email")}\nNumber of veterinarians: ${v("f-size")}\nCurrent software: ${v("f-now") || "-"}`;
+  location.href = "mailto:info@triageiqvet.com?subject=" + encodeURIComponent("Early access: " + v("f-clinic")) + "&body=" + encodeURIComponent(body);
+  $("sent").hidden = false;
+});
+</script>
+
+</body></html>
