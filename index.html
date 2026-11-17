@@ -213,6 +213,9 @@ footer p { max-width: 60ch; }
   section { padding-block: 56px; }
   .hero .wrap, .feature, .signup, .band .wrap, .vrow { grid-template-columns: minmax(0, 1fr); }
   .vrow .vwrap { margin-inline: auto; }
+  #a-client .vrow { grid-template-columns: minmax(0, 1fr); }
+  #a-client .vrow > .shot { justify-self: center; }
+  .vwrap.phone { width: min(72vw, 280px); }
   .feature .intro { position: static; }
   .g3, .g2 { grid-template-columns: minmax(0, 1fr); }
   .pitch > div { grid-template-columns: minmax(0, 1fr); }
@@ -449,7 +452,7 @@ footer p { max-width: 60ch; }
         <li><span class="dot done"></span><div><b>Easy first sign-in.</b> Scan the QR code at the front desk, or use the client ID and a code texted to the number on file.</div></li>
         <li><span class="dot done"></span><div><b>Every pet in one place.</b> Vaccines, care due, history, labs, prescriptions and weight.</div></li>
         <li><span class="dot done"></span><div><b>Book care that's due.</b> Request a visit for one pet or several, at open times only, within your booking rules.</div></li>
-        <li><span class="dot done"></span><div><b>Reschedule or cancel.</b> Cancellations inside 24 hours are marked late for the clinic.</div></li>
+        <li><span class="dot done"></span><div><b>Reschedule or cancel.</b> Cancelling less than 24 hours ahead is recorded as a non-exempt 24-hour cancellation.</div></li>
         <li><span class="dot done"></span><div><b>You confirm.</b> Requests wait for staff, and the client gets a text when it's booked.</div></li>
       </ul>
       <figure class="shot"><div class="vwrap dev phone"><video src="client-app.mp4" poster="client-app.jpg" width="450" height="974" muted loop playsinline preload="metadata" aria-label="Video: the Client App on a phone, signing in, Rosie's care due list, and requesting a visit for two pets at 2:00 PM"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Client App on a phone.</figcaption></figure>
