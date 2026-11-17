@@ -180,6 +180,21 @@ td b { color: var(--navy); }
 .road ul { margin: 0; padding-left: 1.1em; color: var(--muted); display: grid; gap: 6px; font-size: 1rem; }
 .note { font-size: .92rem; color: var(--muted); max-width: 70ch; }
 
+
+/* Apps page */
+.apphead { display: flex; align-items: center; gap: 16px; }
+.apphead img { width: 64px; height: 64px; flex: none; border-radius: 14px; box-shadow: 0 2px 8px rgba(13,74,99,.18); }
+.apphead h2 { margin: 0; }
+.apphead p { margin-top: 2px; color: var(--muted); }
+.vwrap.dev { background: #13303D; padding: 10px; box-shadow: 0 10px 30px rgba(13,74,99,.22); }
+.vwrap.dev video { border: 0; border-radius: 10px; }
+.vwrap.tablet { border-radius: 26px; max-width: min(100%, calc(52vh * 1180 / 820)); }
+.vwrap.phone { border-radius: 34px; padding: 8px; width: min(100%, calc(56vh * 390 / 844)); max-width: none; }
+#a-client .vrow { grid-template-columns: minmax(0, 1fr) auto; }
+#a-client .vrow > .shot { justify-self: end; }
+.vwrap.phone video { border-radius: 26px; }
+.vwrap.dev .vbtn { right: 18px; bottom: 18px; }
+.appnote { font-size: .9rem; color: var(--muted); margin-top: 6px; }
 /* Early access */
 .signup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 64px; align-items: start; }
 form { display: grid; gap: 16px; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
@@ -221,6 +236,7 @@ footer p { max-width: 60ch; }
   <nav aria-label="Main">
     <a href="#home" data-nav="home">Home</a>
     <a href="#product" data-nav="product">Product</a>
+    <a href="#apps" data-nav="apps">Apps</a>
     <a href="#switching" data-nav="switching">Switching</a>
     <a href="#faq" data-nav="faq">FAQ</a>
     <a class="btn" href="#early-access" data-nav="early-access">Early access</a>
@@ -404,6 +420,43 @@ footer p { max-width: 60ch; }
   </div></section>
 </div>
 
+
+<!-- APPS -->
+<div data-view="apps" class="product" hidden>
+  <div class="page-head" style="padding-block:40px 4px"><div class="wrap">
+    <div class="intro"><p class="eyebrow">Apps</p><h1>Two apps, one record.</h1><p class="lede">A Clinic App for your team on tablets and phones, and a Client App for pet owners. Both read and write the same record as the desktop.</p><p class="appnote">Planned for the first six months after the first release. Recorded in the TriageIQ Vet prototype with sample data.</p></div>
+  </div></div>
+
+  <section id="a-clinic"><div class="wrap">
+    <div class="apphead"><img src="clinic-app-icon.svg" alt="Clinic App icon: a paw on navy" width="64" height="64"><div><h2>Clinic App</h2><p>For staff on a tablet or phone, on the floor and in the kennels.</p></div></div>
+    <div class="vrow">
+      <ul class="checks">
+        <li><span class="dot done"></span><div><b>Unlock with your PIN.</b> Any staff member's PIN unlocks it and switches to them. It locks itself after the idle time.</div></li>
+        <li><span class="dot done"></span><div><b>Next Up.</b> Everyone's coming appointments for the day, with patient alerts.</div></li>
+        <li><span class="dot done"></span><div><b>The whole SOAP.</b> Start it from the appointment and fill every section, vitals included.</div></li>
+        <li><span class="dot done"></span><div><b>Whiteboard and treatment sheets.</b> The same live hospital board as the desktop.</div></li>
+        <li><span class="dot done"></span><div><b>Inventory by scan.</b> Receive, in-hospital use, wastage and the want list.</div></li>
+        <li><span class="dot done"></span><div><b>Calendar at a glance.</b> The day by resource, view only.</div></li>
+      </ul>
+      <figure class="shot"><div class="vwrap dev tablet"><video src="clinic-app.mp4" poster="clinic-app.jpg" width="1024" height="712" muted loop playsinline preload="metadata" aria-label="Video: the Clinic App on a tablet, unlocking with a PIN, opening Next Up, starting a SOAP, the hospital whiteboard, inventory, and locking again"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Clinic App on a tablet.</figcaption></figure>
+    </div>
+  </div></section>
+
+  <section id="a-client"><div class="wrap">
+    <div class="apphead"><img src="client-app-icon.svg" alt="Client App icon: a paw on orange" width="64" height="64"><div><h2>Client App</h2><p>For pet owners, with your clinic's name on it.</p></div></div>
+    <div class="vrow">
+      <ul class="checks">
+        <li><span class="dot done"></span><div><b>Easy first sign-in.</b> Scan the QR code at the front desk, or use the client ID and a code texted to the number on file.</div></li>
+        <li><span class="dot done"></span><div><b>Every pet in one place.</b> Vaccines, care due, history, labs, prescriptions and weight.</div></li>
+        <li><span class="dot done"></span><div><b>Book care that's due.</b> Request a visit for one pet or several, at open times only, within your booking rules.</div></li>
+        <li><span class="dot done"></span><div><b>Reschedule or cancel.</b> Cancellations inside 24 hours are marked late for the clinic.</div></li>
+        <li><span class="dot done"></span><div><b>You confirm.</b> Requests wait for staff, and the client gets a text when it's booked.</div></li>
+      </ul>
+      <figure class="shot"><div class="vwrap dev phone"><video src="client-app.mp4" poster="client-app.jpg" width="450" height="974" muted loop playsinline preload="metadata" aria-label="Video: the Client App on a phone, signing in, Rosie's care due list, and requesting a visit for two pets at 2:00 PM"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Client App on a phone.</figcaption></figure>
+    </div>
+  </div></section>
+</div>
+
 <!-- SWITCHING -->
 <div data-view="switching" hidden>
   <div class="page-head"><div class="wrap">
@@ -504,7 +557,7 @@ footer p { max-width: 60ch; }
 </div></footer>
 
 <script>
-const VIEWS = ["home", "product", "switching", "faq", "early-access"];
+const VIEWS = ["home", "product", "apps", "switching", "faq", "early-access"];
 function route(first) {
   const name = location.hash.slice(1), v = VIEWS.includes(name) ? name : "home";
   document.querySelectorAll("[data-view]").forEach(e => e.hidden = e.dataset.view !== v);
