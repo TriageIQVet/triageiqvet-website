@@ -99,7 +99,12 @@ nav a[aria-current="page"]:not(.btn) { color: var(--teal-text); box-shadow: inse
 .shot { margin: 0; display: grid; gap: 8px; min-width: 0; }
 .shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #F7F3EC; }
 .vwrap { position: relative; width: 100%; max-width: min(640px, calc(50vh * 16 / 9)); margin-inline: auto; }
-.feature .vwrap { max-width: min(100%, 560px, calc(50vh * 1000 / 720)); }
+.vrow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px 40px; align-items: center; margin-top: 20px; }
+.vrow .checks { gap: 8px; }
+.product .intro { gap: 8px; }
+.vrow .vwrap { margin-inline: 0; }
+.vrow .shot figcaption { text-align: left; }
+#p-med .vwrap { max-width: min(100%, calc(50vh * 1000 / 720)); }
 .shot video { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; background: #F7F3EC; }
 .vbtn { position: absolute; right: 10px; bottom: 10px; min-height: 36px; padding: 0 12px; border: 0; border-radius: 999px; background: rgba(13,74,99,.86); color: #fff; font: 600 .82rem/1 var(--body); cursor: pointer; }
 .vbtn:hover { background: rgba(13,74,99,1); }
@@ -140,7 +145,7 @@ nav a[aria-current="page"]:not(.btn) { color: var(--teal-text); box-shadow: inse
 .feature .intro { position: static; }
 .jump { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 20px; padding-bottom: 8px; }
 .jump button { min-height: 44px; border: 0; background: none; padding: 0; font: 600 .95rem/1.2 var(--body); color: var(--teal-text); text-decoration: underline; cursor: pointer; }
-.product section { padding-block: 56px; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
+.product section { padding-block: 36px; border-top: 1px solid var(--line); scroll-margin-top: 72px; }
 
 .dose { display: grid; gap: 14px; padding: 18px; }
 .dose label { display: grid; gap: 4px; font-weight: 600; font-size: .95rem; }
@@ -191,7 +196,8 @@ footer p { max-width: 60ch; }
 
 @media (max-width: 900px) {
   section { padding-block: 56px; }
-  .hero .wrap, .feature, .signup, .band .wrap { grid-template-columns: minmax(0, 1fr); }
+  .hero .wrap, .feature, .signup, .band .wrap, .vrow { grid-template-columns: minmax(0, 1fr); }
+  .vrow .vwrap { margin-inline: auto; }
   .feature .intro { position: static; }
   .g3, .g2 { grid-template-columns: minmax(0, 1fr); }
   .pitch > div { grid-template-columns: minmax(0, 1fr); }
@@ -325,25 +331,28 @@ footer p { max-width: 60ch; }
     </ul>
   </div></section>
 
-  <section id="p-med"><div class="wrap feature">
-    <div class="intro"><h2>Doses worked out from today's weight</h2><p>Pick the drug and the mL to draw appears on the line and on the label. Nobody does mg/kg arithmetic on a sticky note.</p>
+  <section id="p-med"><div class="wrap">
+    <div class="intro"><h2>Doses worked out from today's weight</h2><p>Pick the drug and the mL to draw appears on the line and on the label. Nobody does mg/kg arithmetic on a sticky note.</p></div>
+    <div class="vrow">
       <ul class="checks">
         <li><span class="dot done"></span><div><b>Emergency doses are ready first.</b> The monitoring sheet lists each ER drug already calculated for this patient.</div></li>
         <li><span class="dot done"></span><div><b>One dose starts the schedule.</b> A drug given in surgery prefills the start of its follow-up doses.</div></li>
         <li><span class="dot done"></span><div><b>Prescriptions carry their history.</b> Refills left, expiry and the original prescriber follow every refill.</div></li>
       </ul>
+      <figure class="shot"><div class="vwrap"><video src="emergency.mp4" poster="emergency.jpg" width="1000" height="720" muted loop playsinline preload="metadata" aria-label="Video: today's weight typed on the SOAP, the Emergency drugs pop-up showing the mL to draw for each drug, and Epinephrine added to the visit"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
     </div>
-    <figure class="shot"><div class="vwrap"><video src="emergency.mp4" poster="emergency.jpg" width="1000" height="720" muted loop playsinline preload="metadata" aria-label="Video: today's weight typed on the SOAP, the Emergency drugs pop-up showing the mL to draw for each drug, and Epinephrine added to the visit"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
   </div></section>
 
   <section id="p-board"><div class="wrap">
     <div class="intro"><h2>A whiteboard built from the work itself</h2><p>SOAP sections check off as they are filled, and treatment-sheet tasks turn red the minute they are late. There is no color code to learn: Mark critical puts a patient on top, and everyone else is in check-in order.</p></div>
-    <figure class="shot mt"><div class="vwrap"><video src="whiteboard.mp4" poster="whiteboard.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: the hospital whiteboard checking off SOAP sections, a late treatment in red marked done on the treatment sheet, and the patient marked critical moving to the top"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
-    <ul class="checks grid g2 mt">
+    <div class="vrow">
+      <ul class="checks">
       <li><span class="dot done"></span><div><b>Any combination of boards.</b> Appointments, ER, surgery, isolation, inpatient, boarding and grooming.</div></li>
       <li><span class="dot done"></span><div><b>Marking done charges and draws stock.</b> The treatment sheet does the billing as care happens.</div></li>
       <li><span class="dot done"></span><div><b>Monitoring sheets.</b> Anesthesia records and ER doses feed the treatment sheet. Tap the next time box to record a vital.</div></li>
     </ul>
+      <figure class="shot"><div class="vwrap"><video src="whiteboard.mp4" poster="whiteboard.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: the hospital whiteboard checking off SOAP sections, a late treatment in red marked done on the treatment sheet, and the patient marked critical moving to the top"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+    </div>
   </div></section>
 
   <section id="p-record"><div class="wrap feature">
@@ -357,9 +366,10 @@ footer p { max-width: 60ch; }
     </ul>
   </div></section>
 
-  <section id="p-desk"><div class="wrap feature">
+  <section id="p-desk"><div class="wrap">
     <div class="intro"><h2>A calm front desk</h2><p>Scheduling, check-in, messages and checkout, accessible from every screen.</p></div>
-    <ul class="checks">
+    <div class="vrow">
+      <ul class="checks">
       <li><span class="dot done"></span><div><b>Calendar by resource.</b> A column per doctor, room, imaging or groomer, with drag to reschedule and side-by-side double-booking.</div></li>
       <li><span class="dot done"></span><div><b>Online booking.</b> Clients book within your rules, and requests arrive for review.</div></li>
       <li><span class="dot done"></span><div><b>Hold a time for 24 hours.</b> Offer a client a time and hold it while they decide. Online booking can't take it, and an unconfirmed hold clears itself.</div></li>
@@ -368,9 +378,8 @@ footer p { max-width: 60ch; }
       <li><span class="dot done"></span><div><b>Price lookup on every page.</b> It shows the total with fees, and builds an estimate as you go.</div></li>
       <li><span class="dot done"></span><div><b>Simple end of day.</b> Card payments come over automatically. Staff count the rest, and a difference creates a task to check it.</div></li>
     </ul>
-  </div>
-  <div class="wrap">
-    <figure class="shot mt"><div class="vwrap"><video src="calendar.mp4" poster="calendar.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: booking from an open time, holding it for 24 hours, confirming the hold, and dragging a patient from the waitlist onto the calendar"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+      <figure class="shot"><div class="vwrap"><video src="calendar.mp4" poster="calendar.jpg" width="1280" height="720" muted loop playsinline preload="metadata" aria-label="Video: booking from an open time, holding it for 24 hours, confirming the hold, and dragging a patient from the waitlist onto the calendar"></video><button class="vbtn" type="button" aria-label="Pause video">Pause</button></div><figcaption>Workflow recorded in the TriageIQ Vet prototype, with sample data.</figcaption></figure>
+    </div>
   </div></section>
 
   <section id="p-stay"><div class="wrap feature">
